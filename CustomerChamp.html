@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIS</title>
+<style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #1a1a2e;
+            color: white;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+        }
+        .header a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+        .header a.contact {
+            background-color: #00ff88; 
+            padding: 10px 20px; 
+            border-radius: 5px; 
+        }
+        .main-content {
+            text-align: center; 
+            padding-top: 40px;
+        }
+        .main-content h1 {
+            font-size: 3em; 
+            margin-bottom: 20px; 
+            color: #00ff88;
+        }  
+        .main-content p {  
+            font-size: 1.5em;   
+        }  
+        .buttons {  
+            display: flex;   
+            justify-content: center;   
+            gap: 30px;   
+            margin-top: 50px;   
+        }  
+        .button {  
+            background-color: #33334d;
+            padding: 15px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            color: white;
+        } 
+        .chatbot {
+            display: none; /* Initially hide the chatbot */
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 400px;
+            height: 400px;
+            z-index: 1000;
+        }
+        .chatbot iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            color: white;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .fixed-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: #fffbfb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .fixed-icon:hover {
+            background-color: #86e7d6;
+        }
+</style> 
+</head> 
+<body>
+<div class="header">    
+<div class="logo">     
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEQAAAAeCAYAAACVBrgjAAAACXBIWXMAAC4jAAAuIwF4pT92AAAKT2lDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjanVNnVFPpFj333vRCS4iAlEtvUhUIIFJCi4AUkSYqIQkQSoghodkVUcERRUUEG8igiAOOjoCMFVEsDIoK2AfkIaKOg6OIisr74Xuja9a89+bN/rXXPues852zzwfACAyWSDNRNYAMqUIeEeCDx8TG4eQuQIEKJHAAEAizZCFz/SMBAPh+PDwrIsAHvgABeNMLCADATZvAMByH/w/qQplcAYCEAcB0kThLCIAUAEB6jkKmAEBGAYCdmCZTAKAEAGDLY2LjAFAtAGAnf+bTAICd+Jl7AQBblCEVAaCRACATZYhEAGg7AKzPVopFAFgwABRmS8Q5ANgtADBJV2ZIALC3AMDOEAuyAAgMADBRiIUpAAR7AGDIIyN4AISZABRG8lc88SuuEOcqAAB4mbI8uSQ5RYFbCC1xB1dXLh4ozkkXKxQ2YQJhmkAuwnmZGTKBNA/g88wAAKCRFRHgg/P9eM4Ors7ONo62Dl8t6r8G/yJiYuP+5c+rcEAAAOF0ftH+LC+zGoA7BoBt/qIl7gRoXgugdfeLZrIPQLUAoOnaV/Nw+H48PEWhkLnZ2eXk5NhKxEJbYcpXff5nwl/AV/1s+X48/Pf14L7iJIEyXYFHBPjgwsz0TKUcz5IJhGLc5o9H/LcL//wd0yLESWK5WCoU41EScY5EmozzMqUiiUKSKcUl0v9k4t8s+wM+3zUAsGo+AXuRLahdYwP2SycQWHTA4vcAAPK7b8HUKAgDgGiD4c93/+8//UegJQCAZkmScQAAXkQkLlTKsz/HCAAARKCBKrBBG/TBGCzABhzBBdzBC/xgNoRCJMTCQhBCCmSAHHJgKayCQiiGzbAdKmAv1EAdNMBRaIaTcA4uwlW4Dj1wD/phCJ7BKLyBCQRByAgTYSHaiAFiilgjjggXmYX4IcFIBBKLJCDJiBRRIkuRNUgxUopUIFVIHfI9cgI5h1xGupE7yAAygvyGvEcxlIGyUT3UDLVDuag3GoRGogvQZHQxmo8WoJvQcrQaPYw2oefQq2gP2o8+Q8cwwOgYBzPEbDAuxsNCsTgsCZNjy7EirAyrxhqwVqwDu4n1Y8+xdwQSgUXACTYEd0IgYR5BSFhMWE7YSKggHCQ0EdoJNwkDhFHCJyKTqEu0JroR+cQYYjIxh1hILCPWEo8TLxB7iEPENyQSiUMyJ7mQAkmxpFTSEtJG0m5SI+ksqZs0SBojk8naZGuyBzmULCAryIXkneTD5DPkG+Qh8lsKnWJAcaT4U+IoUspqShnlEOU05QZlmDJBVaOaUt2ooVQRNY9aQq2htlKvUYeoEzR1mjnNgxZJS6WtopXTGmgXaPdpr+h0uhHdlR5Ol9BX0svpR+iX6AP0dwwNhhWDx4hnKBmbGAcYZxl3GK+YTKYZ04sZx1QwNzHrmOeZD5lvVVgqtip8FZHKCpVKlSaVGyovVKmqpqreqgtV81XLVI+pXlN9rkZVM1PjqQnUlqtVqp1Q61MbU2epO6iHqmeob1Q/pH5Z/YkGWcNMw09DpFGgsV/jvMYgC2MZs3gsIWsNq4Z1gTXEJrHN2Xx2KruY/R27iz2qqaE5QzNKM1ezUvOUZj8H45hx+Jx0TgnnKKeX836K3hTvKeIpG6Y0TLkxZVxrqpaXllirSKtRq0frvTau7aedpr1Fu1n7gQ5Bx0onXCdHZ4/OBZ3nU9lT3acKpxZNPTr1ri6qa6UbobtEd79up+6Ynr5egJ5Mb6feeb3n+hx9L/1U/W36p/VHDFgGswwkBtsMzhg8xTVxbzwdL8fb8VFDXcNAQ6VhlWGX4YSRudE8o9VGjUYPjGnGXOMk423GbcajJgYmISZLTepN7ppSTbmmKaY7TDtMx83MzaLN1pk1mz0x1zLnm+eb15vft2BaeFostqi2uGVJsuRaplnutrxuhVo5WaVYVVpds0atna0l1rutu6cRp7lOk06rntZnw7Dxtsm2qbcZsOXYBtuutm22fWFnYhdnt8Wuw+6TvZN9un2N/T0HDYfZDqsdWh1+c7RyFDpWOt6azpzuP33F9JbpL2dYzxDP2DPjthPLKcRpnVOb00dnF2e5c4PziIuJS4LLLpc+Lpsbxt3IveRKdPVxXeF60vWdm7Obwu2o26/uNu5p7ofcn8w0nymeWTNz0MPIQ+BR5dE/C5+VMGvfrH5PQ0+BZ7XnIy9jL5FXrdewt6V3qvdh7xc+9j5yn+M+4zw33jLeWV/MN8C3yLfLT8Nvnl+F30N/I/9k/3r/0QCngCUBZwOJgUGBWwL7+Hp8Ib+OPzrbZfay2e1BjKC5QRVBj4KtguXBrSFoyOyQrSH355jOkc5pDoVQfujW0Adh5mGLw34MJ4WHhVeGP45wiFga0TGXNXfR3ENz30T6RJZE3ptnMU85ry1KNSo+qi5qPNo3ujS6P8YuZlnM1VidWElsSxw5LiquNm5svt/87fOH4p3iC+N7F5gvyF1weaHOwvSFpxapLhIsOpZATIhOOJTwQRAqqBaMJfITdyWOCnnCHcJnIi/RNtGI2ENcKh5O8kgqTXqS7JG8NXkkxTOlLOW5hCepkLxMDUzdmzqeFpp2IG0yPTq9MYOSkZBxQqohTZO2Z+pn5mZ2y6xlhbL+xW6Lty8elQfJa7OQrAVZLQq2QqboVFoo1yoHsmdlV2a/zYnKOZarnivN7cyzytuQN5zvn//tEsIS4ZK2pYZLVy0dWOa9rGo5sjxxedsK4xUFK4ZWBqw8uIq2Km3VT6vtV5eufr0mek1rgV7ByoLBtQFr6wtVCuWFfevc1+1dT1gvWd+1YfqGnRs+FYmKrhTbF5cVf9go3HjlG4dvyr+Z3JS0qavEuWTPZtJm6ebeLZ5bDpaql+aXDm4N2dq0Dd9WtO319kXbL5fNKNu7g7ZDuaO/PLi8ZafJzs07P1SkVPRU+lQ27tLdtWHX+G7R7ht7vPY07NXbW7z3/T7JvttVAVVN1WbVZftJ+7P3P66Jqun4lvttXa1ObXHtxwPSA/0HIw6217nU1R3SPVRSj9Yr60cOxx++/p3vdy0NNg1VjZzG4iNwRHnk6fcJ3/ceDTradox7rOEH0x92HWcdL2pCmvKaRptTmvtbYlu6T8w+0dbq3nr8R9sfD5w0PFl5SvNUyWna6YLTk2fyz4ydlZ19fi753GDborZ752PO32oPb++6EHTh0kX/i+c7vDvOXPK4dPKy2+UTV7hXmq86X23qdOo8/pPTT8e7nLuarrlca7nuer21e2b36RueN87d9L158Rb/1tWeOT3dvfN6b/fF9/XfFt1+cif9zsu72Xcn7q28T7xf9EDtQdlD3YfVP1v+3Njv3H9qwHeg89HcR/cGhYPP/pH1jw9DBY+Zj8uGDYbrnjg+OTniP3L96fynQ89kzyaeF/6i/suuFxYvfvjV69fO0ZjRoZfyl5O/bXyl/erA6xmv28bCxh6+yXgzMV70VvvtwXfcdx3vo98PT+R8IH8o/2j5sfVT0Kf7kxmTk/8EA5jz/GMzLdsAAAAgY0hSTQAAeiUAAICDAAD5/wAAgOkAAHUwAADqYAAAOpgAABdvkl/FRgAAA3lJREFUeNrs2V+IVFUcB/DPbGtW2liuSIVGZFZYUBGZPRitUElSPYTUSxCFFCFEhf0RQsIeoiDC2JeKCLKIIsqHoKiHLAgqjaiHIFIKMixSU7e1Td3Tg7/J0zh3dmZ2Zndg5wvD/O45555zz/f+zu/fLaWU9HAcfQ2MORWLMb+q/SQsxyBOrupbhgdxQVX7ediEO2vM9TRewMBUEtI/Tn8J5+BslDGMkehbjGuC1D34Ntrn4w5cGhvdhH9irjW4FyvwDb6Le1bj0ZB/w1PdqiFzsDBIKGNB1ncdUmx2EDOi/WZcjR24FVdF+1I8hu9xCdZlc72ayRtraGPXEHIYR+LY9OHvrO8ATg+iDmIse8N9oVmj2Bvte7APi+L6p2yuHzJ5DIemipBSA0Z1Ls7FfvycbXwOro9j8VG28RJuDzvyHj7J5lqB9fgaG7KNL8TLOA0P4atuJqTnZXqE9NCw263GQBjRUgtrHcAfdfovxOywLw0d97A9/RPY/9Gwi8eRUhrvtzKltDmltDOlNJZax1hK6e6CNa7Mxq0e53nmppReSin9ntqDd1NKpcr89RYeSCl9mNqLtwvWWpeNea3OMy1IKe1N7cd/hBSp27wIoOZlbb9ie8QZY814svjfh2cKxgxn8p915voAZ4Z8BG9V3avJ5zqKzRFg1rUhWzMyDkXI/XoHbVkqkHMsjwhXxESXnXD+O2RU78KSkEcjJ9nZBQ5gWSYPdYKMWm73fDycXT/QJWRUPEIFsyYrDrkxNAL+wotdFCJ8msn3ZUljR4/MkkzeHud5KR7HKXXOd5HR2h+5Szu0bBs+C1syE19GnjTSZFyUsAvvY8t4hJQzeVf8b8FZE9hIGTe16QWuisTvoqwE0SrWhNatzLPrakJyd1qpgj2LJ+K6WQ0Zjiy2XTiIi/Ekbssi1dSEdvSHtsO1+BxXFBGSamjPc1Ham9HCBkY6ZE82xG9mlB80ScgNeCNe8uVR4XtzvFwmVRWKDndhLjba4n3v4BE8H9e3VAiZztnu1lq2czoTsraGA5lQ6jxVGIzArJVSX8WGrMI9WfsrRYTMLpA7jVkNrjuE+9u89hC+KDoyeQD1yyQSsqPgGarRzs8To+Gp1v4vVqgqMpdDlRY59rFo9ySSsjHWXx9pQy2c4diHrlaPTClird34GD+eMKBXda+f3E17/DsA3MWTu5TpMGYAAAAASUVORK5CYII=" alt="FIS Logo">    
+</div>    
+<nav>     
+<a href="#">Who we are</a>     
+<a href="#">Solutions we provide</a>     
+<a href="#">Resources</a>     
+<a href="#">Explore more</a>     
+<a href="#" class="contact">Contact us</a>    
+</nav>  
+</div>
+<div class="main-content">    
+  <h1>Let's get the conversation going</h1>    
+  <p>Welcome to our website. We are here to help you with all your needs.</p>
+  <div class="buttons">    
+      <a href="#" class="button">Learn More</a>    
+      <a href="#" class="button">Get Started</a>    
+  </div>
+  <div class="chatbot" id="chatbot">
+     <iframe src="https://copilotstudio.microsoft.com/environments/511cd46f-3d14-e849-91af-99a83342baab/bots/crb62_dev3Bot/webchat?__version__=2" frameborder="0" style="width: 100%; height: 100%;"></iframe>
+  </div>
+</div>
+<div class="footer">
+        <p>&copy; 2025 FIS Global. All rights reserved.</p>
+    </div>
+<div class="fixed-icon" onclick="toggleChatbot()">
+    <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTcuNSAxMmE1LjUgNS41IDAgMSAxIDAgMTEgNS41IDUuNSAwIDAgMSAwLTExbS01LjQ3OCAyQTYuNDcgNi40NyAwIDAgMCAxMSAxNy41YzAgMS42NDQuNjEgMy4xNDYgMS42MTcgNC4yOXEtMS4yMDMuMjExLTIuNjE3LjIxMWMtMi44OSAwLTUuMTI4LS42NTctNi42OTEtMmEzLjc1IDMuNzUgMCAwIDEtMS4zMDUtMi44NDR2LS45MDdBMi4yNSAyLjI1IDAgMCAxIDQuMjU0IDE0em01LjQ3OCAwLS4wOS4wMDdhLjUuNSAwIDAgMC0uNDAyLjQwMkwxNyAxNC41VjE3aC0yLjUwMmwtLjA5LjAwOGEuNS41IDAgMCAwLS40MDIuNDAybC0uMDA4LjA5LjAwOC4wOWEuNS41IDAgMCAwIC40MDIuNDAybC4wOS4wMDhIMTd2Mi41MDNsLjAwOC4wOWEuNS41IDAgMCAwIC40MDIuNDAybC4wOS4wMDguMDktLjAwOGEuNS41IDAgMCAwIC40MDItLjQwMmwuMDA4LS4wOVYxOGwyLjUwNC4wMDEuMDktLjAwOGEuNS41IDAgMCAwIC40MDItLjQwMmwuMDA4LS4wOS0uMDA4LS4wOWEuNS41IDAgMCAwLS40MDMtLjQwMmwtLjA5LS4wMDhIMTh2LTIuNWwtLjAwOC0uMDlhLjUuNSAwIDAgMC0uNDAyLS40MDN6TTEwIDJhLjc1Ljc1IDAgMCAxIC43NDMuNjQ5bC4wMDcuMTAxdi43NWgzLjVhMi4yNSAyLjI1IDAgMCAxIDIuMjUgMi4yNXY0LjUwNWMwIC4zLS4wNi41ODgtLjE2Ni44NWE2LjQ2IDYuNDYgMCAwIDAtMi45OTMgMS40SDUuNzVhMi4yNSAyLjI1IDAgMCAxLTIuMjUtMi4yNVY1Ljc1QTIuMjUgMi4yNSAwIDAgMSA1Ljc1IDMuNWgzLjV2LS43NWEuNzUuNzUgMCAwIDEgLjU1MS0uNzIzbC4wOTgtLjAyek03Ljc1IDYuNWExLjI1IDEuMjUgMCAxIDAgMCAyLjQ5OSAxLjI1IDEuMjUgMCAwIDAgMC0yLjQ5OW00LjQ5MiAwYTEuMjUgMS4yNSAwIDEgMCAwIDIuNDk5IDEuMjUgMS4yNSAwIDAgMCAwLTIuNDk5IiBmaWxsPSIjMDA0ZmY5Ii8+PC9zdmc+'/>
+</div>
+<script>
+    function toggleChatbot() {
+        var chatbot = document.getElementById('chatbot');
+        if (chatbot.style.display === 'none' || chatbot.style.display === '') {
+            chatbot.style.display = 'block';
+            document.addEventListener('click', closeChatbotOnClickOutside);
+        } else {
+            chatbot.style.display = 'none';
+            document.removeEventListener('click', closeChatbotOnClickOutside);
+        }
+    }
+
+    function closeChatbotOnClickOutside(event) {
+        var chatbot = document.getElementById('chatbot');
+        var fixedIcon = document.querySelector('.fixed-icon');
+        if (!chatbot.contains(event.target) && !fixedIcon.contains(event.target)) {
+            chatbot.style.display = 'none';
+            document.removeEventListener('click', closeChatbotOnClickOutside);
+        }
+    }
+</script>
+</body>
+</html>
