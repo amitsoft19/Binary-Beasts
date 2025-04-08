@@ -54,7 +54,7 @@ Power Apps (AI): Power Apps is used to create custom applications that integrate
 
 Usage: To start using the FIS Customer Interactive BOT, follow these steps:
 
-Open your web browser: Navigate to the application by entering the URL provided2.
+Open your web browser: Navigate to the application by entering the URL [FIS](https://amitsoft19.github.io/Binary-Beasts/CustomerChamp.html)
 
 Access the application: Once you are on the website, you can start interacting with the bot to find the best solutions for your business needs2.DefineCode
 
